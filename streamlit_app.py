@@ -21,14 +21,15 @@ my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT
 st.dataframe(data=my_dataframe, use_container_width=True)
 ingredients_list = st.multiselect("choose up to 5",my_dataframe,max_selections=5)
 
-smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
-#st.text(smoothiefroot_response.json())
-st_df=st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
+
 
 if ingredients_list:
     st.write(ingredients_list)
     st.text(ingredients_list)
     ingredients_string=' '.join(ingredients_list)
+    for fuit_chosen in ingredients_list:
+        smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
+        st_df=st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
     st.write(ingredients_string)
 
     my_insert_stmt = """ insert into smoothies.public.orders(ingredients,name_on_order)
